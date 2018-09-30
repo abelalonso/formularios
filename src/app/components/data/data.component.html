@@ -1,0 +1,84 @@
+<h4>Formularios <small>data</small></h4>
+<hr>
+<form [formGroup]="formulario" (ngSubmit)="guardarCambios()">
+    <div formGroupName="nombreCompleto">
+        <div class="form-group row" [ngClass]="{ 'has-danger': formulario.controls['nombreCompleto'].controls['nombre'].invalid && formulario.controls['nombreCompleto'].controls['nombre'].dirty}">
+            <label class="col-2 col-form-label">Nombre</label>
+            <div class="col-8">
+                <input class="form-control" type="text" placeholder="Nombre" formControlName="nombre">
+                <div class="form-control-feedback" *ngIf="formulario.get('nombreCompleto.nombre').errors?.required && formulario.get('nombreCompleto.nombre').dirty">
+                    El nombre es requerido
+                </div>
+                <div class="form-control-feedback" *ngIf="formulario.get('nombreCompleto.nombre').errors?.minlength">
+                    Al menos 5 caracteres
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group row" [ngClass]="{ 'has-danger': formulario.get('nombreCompleto.apellido').invalid && formulario.get('nombreCompleto.apellido').dirty}">
+            <label class="col-2 col-form-label">Apellido</label>
+            <div class="col-8">
+                <input class="form-control" type="text" placeholder="Apellido" formControlName="apellido">
+                <div class="form-control-feedback" *ngIf="!formulario.get('nombreCompleto.apellido').valid && formulario.get('nombreCompleto.apellido').dirty">
+                    El apellido es requerido y no puede ser herrera
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group row" [ngClass]="{ 'has-danger': formulario.controls['email'].invalid && formulario.controls['email'].dirty}">
+        <label class="col-2 col-form-label">Correo</label>
+        <div class="col-md-8">
+            <input class="form-control" type="email" placeholder="Correo electrónico" formControlName="email">
+            <div class="form-control-feedback" *ngIf="formulario.controls['email'].errors?.required && formulario.controls['email'].dirty">
+                El email es requerido
+            </div>
+            <div class="form-control-feedback" *ngIf="!formulario.controls['email'].valid && formulario.controls['email'].dirty">
+                El email debe ser válido
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group row" [ngClass]="{ 'has-danger': formulario.get('password1').invalid && formulario.get('password1').dirty}">
+        <label class="col-2 col-form-label">Password</label>
+        <div class="col-8">
+            <input class="form-control" type="password" placeholder="Password" formControlName="password1">
+            <div class="form-control-feedback" *ngIf="!formulario.get('password1').valid && formulario.get('password1').dirty">
+                La contraseña es requerida
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group row" [ngClass]="{ 'has-danger': formulario.get('password2').invalid && formulario.get('password2').dirty}">
+        <label class="col-2 col-form-label">Repetir password</label>
+        <div class="col-8">
+            <input class="form-control" type="password" placeholder="Repetir password" formControlName="password2">
+            <div class="form-control-feedback" *ngIf="!formulario.get('password2').valid && formulario.get('password2').dirty">
+                Las contraseñas no coinciden
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-2 col-form-label">Pasatiempos</label>
+        <div class="col-md-8" formArrayName="pasatiempos">
+            <div class="d-flex" *ngFor="let pasatiempo of formulario.controls['pasatiempos'].controls; let i = index">
+                <input type="text" class="form-control" [formControlName]="i">
+                <button class="btn btn-danger" (click)="eliminarPasatiempo(index)">x</button>
+            </div>
+        </div>
+        <button class="btn btn-primary" type="button" (click)="agregarPasatiempo()">Nuevo</button>
+    </div>
+
+
+
+    <div class="form-group row">
+        <label class="col-2 col-form-label">&nbsp;</label>
+        <div class="input-group col-md-8">
+            <button [disabled]="!formulario.valid" type="submit" class="btn btn-outline-primary">
+        Guardar
+      </button>
+        </div>
+    </div>
+
+</form>
